@@ -1,0 +1,134 @@
+# AI Talent Operations - Scheduling Agent Configuration
+
+# Scheduling Agent Settings
+scheduling:
+  # Thumb rules
+  max_interviews_per_week: 1
+  max_interviews_per_day: 1
+
+  # Business hours (24-hour format)
+  business_hours:
+    start: "09:00"
+    end: "17:00"
+    timezone: "America/New_York"
+
+  # Default interview duration (minutes)
+  default_duration: 60
+
+  # Buffer time between interviews (minutes)
+  buffer_time: 15
+
+# Calendar Integration
+calendar:
+  provider: "outlook"
+  calendar_name: "main"
+
+  # Outlook settings (for future Microsoft Graph API integration)
+  outlook:
+    client_id: "${OUTLOOK_CLIENT_ID}"
+    client_secret: "${OUTLOOK_CLIENT_SECRET}"
+    tenant_id: "${OUTLOOK_TENANT_ID}"
+    calendar_id: "main"
+
+# Data Sources
+data_sources:
+  # Interviewers data source
+  interviewers:
+    source: "config"  # Options: config, database, hr_system
+    file: "interviewers.json"
+
+  # Schedule data source
+  schedule:
+    source: "file"  # Options: file, database
+    file: "schedule.json"
+
+# Validation Rules
+validation:
+  # Required fields for scheduling
+  required_fields:
+    - interviewer
+    - candidate
+    - role
+    - date
+
+  # Date validation
+  date_formats:
+    - "YYYY-MM-DD"
+    - "MM/DD/YYYY"
+    - "MM-DD-YYYY"
+
+  # Interviewer availability rules
+  availability:
+    check_calendar_conflicts: true
+    enforce_thumb_rules: true
+    allow_weekend_scheduling: false
+
+# Notifications
+notifications:
+  enabled: true
+  channels:
+    - email
+    - slack
+
+  # Email settings
+  email:
+    smtp_server: "${SMTP_SERVER}"
+    smtp_port: 587
+    sender: "${NOTIFICATION_EMAIL}"
+    recipients: ["recruiting@company.com"]
+
+  # Slack settings
+  slack:
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#recruiting-scheduling"
+
+# Logging
+logging:
+  level: "INFO"
+  file: "scheduling_agent.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# UI Settings
+ui:
+  theme: "modern"
+  colors:
+    primary: "#007acc"
+    success: "#28a745"
+    warning: "#ffc107"
+    error: "#dc3545"
+
+# Integration with other agents
+integrations:
+  sourcing_agent:
+    enabled: true
+    endpoint: "http://localhost:5000"
+
+  matching_agent:
+    enabled: true
+    endpoint: "http://localhost:5001"
+
+  outreach_agent:
+    enabled: true
+    endpoint: "http://localhost:5002"
+
+# Sample Interviewers (for initial setup)
+sample_interviewers:
+  - name: "Sarah Chen"
+    email: "sarah.chen@company.com"
+    role: "Engineering Manager"
+
+  - name: "Mike Johnson"
+    email: "mike.johnson@company.com"
+    role: "Senior Engineer"
+
+  - name: "Lisa Rodriguez"
+    email: "lisa.rodriguez@company.com"
+    role: "Product Manager"
+
+  - name: "David Kim"
+    email: "david.kim@company.com"
+    role: "Tech Lead"
+
+  - name: "Anna Patel"
+    email: "anna.patel@company.com"
+    role: "HR Business Partner"
